@@ -1,0 +1,65 @@
+class Graph:
+ 
+	def __init__(self, V):
+		self.V = V 
+		self.graph = []
+		 
+	def addEdge(self,u,v,w):
+		self.graph.append([u, v, w])
+		self.graph.append([v, u, w])
+		 
+	def bellman_ford(self, src):
+ 
+		dist = [float("Inf")] * self.V
+		dist[src] = 0
+		parent = {}
+		parent[src] = src
+		for i in range(self.V - 1):
+			for u, v, w in self.graph:
+				
+				if dist[u] != float("Inf") and dist[u] + w < dist[v]:
+						dist[v] = dist[u] + w
+						try:
+							parent[v] = u
+						except KeyError:
+							pass
+		
+		print 'Vertex\tShortest Distance\tPath'		
+		for i in range(self.V):
+			path = []
+			x = i
+			while x != src:
+				path.append(x)
+				x = parent[x]
+			print i, '\t', dist[i], '\t', path + [src]		
+		
+		
+g = Graph(10)
+g.addEdge(0,1,3);
+g.addEdge(0,9,3);
+g.addEdge(9,1,5);
+	
+g.addEdge(1,2,2);
+g.addEdge(1,3,5);
+g.addEdge(2,3,2);
+	
+g.addEdge(3,4,1);
+g.addEdge(4,5,1);
+g.addEdge(3,5,3);
+	
+g.addEdge(5,7,5);
+#g.addEdge(5,6,2);
+g.addEdge(5,6,4);
+g.addEdge(6,7,1);
+	
+g.addEdge(7,8,2);
+g.addEdge(8,9,2);
+g.addEdge(9,7,3);
+ 
+ 
+print "Flow 1" 
+g.bellman_ford(0)
+print "Flow 2"
+g.bellman_ford(3) 
+ 
+
